@@ -6,4 +6,4 @@ misty.start_face_recognition()
 
 
 def registerFaceDetection ():
-    misty.speak
+    misty.speak_test
