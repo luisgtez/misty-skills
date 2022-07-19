@@ -6,4 +6,6 @@ misty.start_face_recognition()
 
 
 def registerFaceDetection ():
-    misty.
+# Enter Register Face Detection here in python.
+
+
