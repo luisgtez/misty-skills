@@ -69,7 +69,6 @@ def _GetAudioFile(data):
         json.dumps({"audio": {'content': base64}, "config": {"enableAutomaticPunctuation": True,
                    "encoding": "LINEAR16", "languageCode": "es-ES", "model": "command_and_search"}})
     )
-
     _SendExternalRequest(respuest)
 
 
