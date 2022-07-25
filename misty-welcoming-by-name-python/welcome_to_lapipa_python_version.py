@@ -95,14 +95,6 @@ def ReturnToNormal():
     misty.DisplayImage('e_DefaultContent.jpg')
     misty.ChangeLED(0, 0, 0)
 
-def GetAudioList():
-    x = json.loads(misty.GetAudioList().text)['result']
-    l = []
-    for i in range(len(x)):
-        if x[i]['systemAsset'] == False:
-            l.append(x[i]['name'])
-    return l
-
 ###############################################TEST-CODE#########################################################
 
 
