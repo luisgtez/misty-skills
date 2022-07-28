@@ -119,12 +119,12 @@ def Return_Weather(datos_weather):
               " por ciento, el día "+str(datos_weather['dia_weather'])+
               " la probabilidad de lluvia es de "+str(datos_weather['daily_chance_of_rain_weather'])+
               " por ciento, y el estado actual es "+str(datos_weather['condition_weather']),voice="es-es-x-ana-local")
-  
+
 #######################################TestCode##########################################################
 
 
 misty = Robot('192.168.128.86')
-GDF_Token = "ya29.A0AVA9y1sAoWfwYThJXJs7_YKEiSI8J3RUESQn61b47816TWWORMQJs3jppNwdUqmBMDEg65nfN7a5MHEaPGHJkPjGl5nPXhnIyy-cF8aDFtPxSqhJgb6sex3FbutMGwEzfClCeyw_KLwTzMDf9-yi_7V9qtvAYUNnWUtBVEFTQVRBU0ZRRTY1ZHI4RC1zeEZVSWtjZkdJYWgzWktNanA4QQ0163"
-GTTS_Key = 'AIzaSyB3ZjAuEvJYwwKVnRrgvymJqMe5kSBFYzk'
+GDF_Token = "YOUR GOOGLE DIALOG FLOW TOKEN"
+GTTS_Key = 'YOUR GOOGLE TEXT TO SPEECH KEY'
 Google_Dialog_Flow_API("Que tiempo hace mañana en Gijon")
 #CaptureSpeech()
