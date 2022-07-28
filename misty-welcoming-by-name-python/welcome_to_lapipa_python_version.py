@@ -2,6 +2,8 @@ from mistyPy.Robot import Robot
 from mistyPy.Events import Events
 import json
 from time import time
+import google.oauth2.credentials
+
 
 ###############################################FACE RECOGNITION###################################################################
 
@@ -55,6 +57,7 @@ def GetFileName(event):
     print('\nSTART GET FILE NAME FUNCTION')
     file_name = event['message']['filename']
     data = misty.GetAudioFile(file_name, base64=True)
+    base64 = data.json()['result']['base64']
     _GetAudioFile(data)
 
 ##############################################GOOGLE API#########################################################
@@ -106,5 +109,3 @@ apikey = 'YOUR APIKEY'
 misty.MoveHead(-5, 0, 0)
 misty.DisplayImage('e_DefaultContent.jpg')
 misty.ChangeLED(0, 0, 0)
-
-Start_Face_Recognition()
