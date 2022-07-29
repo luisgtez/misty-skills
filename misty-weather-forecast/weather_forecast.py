@@ -6,7 +6,7 @@ import requests
 
 #######################################Define API Keys###################################################
 
-misty = Robot('192.168.128.86')
+misty = Robot('Misty IP ADDRESS')
 GDF_Token = "YOUR GOOGLE DIALOG FLOW TOKEN"
 GTTS_Key = 'YOUR GOOGLE TEXT TO SPEECH KEY'
 weather_api_key = 'YOUR WEATHER API KEY'
@@ -71,7 +71,6 @@ def Google_Dialog_Flow_API(query_tiempo):
 
 def Extract_Data_From_GDF(response_gdf):
   print('START Extract_Data_From_GDF\n')
-
   location = response_gdf.json()['queryResult']['outputContexts'][0]['parameters']['address']['city']
   date = response_gdf.json()['queryResult']['outputContexts'][0]['parameters']['date-time']
   
@@ -83,7 +82,6 @@ def weather_API(location, date):
   print('START weather_API')
   reqUrl = "https://api.weatherapi.com/v1/forecast.json?key="+weather_api_key+"&q="+location+"&dt="+date
   response_weather = requests.request("POST", reqUrl)
-  
   dia_weather = response_weather.json()['forecast']['forecastday'][0]['date']
   maxtemp_weather = response_weather.json()['forecast']['forecastday'][0]['day']['maxtemp_c']
   mintemp_weather = response_weather.json()['forecast']['forecastday'][0]['day']['mintemp_c']
@@ -101,7 +99,7 @@ def weather_API(location, date):
                   'daily_chance_of_rain_weather': daily_chance_of_rain_weather,
                   'condition_weather': condition_weather
                   }
-  
+  print("\n",datos_weather)
   Return_Weather(datos_weather)
   
   
