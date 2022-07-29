@@ -4,6 +4,13 @@ from mistyPy.Events import Events
 import json
 import requests
 
+#######################################Define API Keys###################################################
+
+misty = Robot('192.168.128.86')
+GDF_Token = "YOUR GOOGLE DIALOG FLOW TOKEN"
+GTTS_Key = 'YOUR GOOGLE TEXT TO SPEECH KEY'
+weather_api_key = 'YOUR WEATHER API KEY'
+
 #######################################Misty Record Query###################################################
 
 def CaptureSpeech():
@@ -17,13 +24,13 @@ def GetFileName(event):
   file_name = event['message']['filename']
   data = misty.GetAudioFile(file_name, base64=True)
   base64_data = data.json()['result']['base64']
-  GetAudioFile(base64_data)
+  GetAudioToText(base64_data)
 
 #######################################Misty Heard GoogleAPI#############################################################
 
-def GetAudioFile(base64_data):
+def GetAudioToText(base64_data):
   print('START _GetAudioFile\n')
-  respuest = misty.SendExternalRequest(
+  respuesta = misty.SendExternalRequest(
       "POST",
       "https://speech.googleapis.com/v1p1beta1/speech:recognize?key=" + GTTS_Key,
       None,
@@ -31,11 +38,11 @@ def GetAudioFile(base64_data):
       json.dumps({"audio": {'content': base64_data}, "config": {"enableAutomaticPunctuation": True,
                   "encoding": "LINEAR16", "languageCode": "es-ES", "model": "command_and_search"}})
   )
-  _SendExternalRequest(respuest)
+  ParseText(respuesta)
 
-def _SendExternalRequest(data):
+def ParseText(respuesta):
   print('START _SendExternalRequest\n')
-  respuesta = data.json()['results'][0]['alternatives'][0]['transcript']
+  respuesta = respuesta.json()['results'][0]['alternatives'][0]['transcript']
   Google_Dialog_Flow_API(respuesta)
 
 #######################################Google Dialog Flow API###################################################
@@ -45,10 +52,7 @@ def Google_Dialog_Flow_API(query_tiempo):
   reqUrl = "https://dialogflow.googleapis.com/v2/projects/misty-weather-mocr/agent/sessions/test1:detectIntent"
 
   headersList = {
-  "Accept": "*/*",
-  "User-Agent": "Thunder Client (https://www.thunderclient.com)",
   "Authorization": 'Bearer '+GDF_Token,
-  "Content-Type": "application/json" 
   }
 
   payload = json.dumps({
@@ -72,22 +76,13 @@ def Extract_Data_From_GDF(response_gdf):
   date = response_gdf.json()['queryResult']['outputContexts'][0]['parameters']['date-time']
   
   weather_API(location, date)
+  
 #######################################Weather API#############################################################
 
 def weather_API(location, date):
   print('START weather_API')
-  reqUrl = "https://api.weatherapi.com/v1/forecast.json?key=50cd09d6fd3242ad944142452222507&q="+location+"&dt="+date
-
-  headersList = {
-  "Accept": "*/*",
-  "User-Agent": "Thunder Client (https://www.thunderclient.com)" 
-  }
-
-  response_weather = requests.request("POST", reqUrl,  headers=headersList)
-  
-  print(type(response_weather.json()))
-  with open('response_weather.json', 'w') as outfile:
-    json.dump(response_weather, outfile)
+  reqUrl = "https://api.weatherapi.com/v1/forecast.json?key="+weather_api_key+"&q="+location+"&dt="+date
+  response_weather = requests.request("POST", reqUrl)
   
   dia_weather = response_weather.json()['forecast']['forecastday'][0]['date']
   maxtemp_weather = response_weather.json()['forecast']['forecastday'][0]['day']['maxtemp_c']
@@ -107,7 +102,7 @@ def weather_API(location, date):
                   'condition_weather': condition_weather
                   }
   
-  #Return_Weather(datos_weather)
+  Return_Weather(datos_weather)
   
   
 #######################################Misty Speak#############################################################
@@ -123,8 +118,4 @@ def Return_Weather(datos_weather):
 #######################################TestCode##########################################################
 
 
-misty = Robot('192.168.128.86')
-GDF_Token = "YOUR GOOGLE DIALOG FLOW TOKEN"
-GTTS_Key = 'YOUR GOOGLE TEXT TO SPEECH KEY'
-Google_Dialog_Flow_API("Que tiempo hace mañana en Gijon")
-#CaptureSpeech()
+CaptureSpeech()
